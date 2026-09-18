@@ -1,0 +1,11 @@
+# Build output
+build/
+*.app
+
+# macOS
+.DS_Store
+
+# Xcode / Swift
+*.swiftmodule
+*.swiftdoc
+*.swiftdeps
