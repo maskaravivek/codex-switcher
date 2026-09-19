@@ -17,7 +17,7 @@ Download `CodexSwitcher-0.1.0-macOS.zip` from
 [Releases](https://github.com/mangoappstudio/codex-switcher/releases), unzip,
 move to `/Applications`, and open.
 
-The app is unsigned, so on first launch right-click it and choose **Open**.
+The app is self-signed (not notarized), so on first launch right-click it and choose **Open**.
 
 ## Use
 
@@ -37,6 +37,7 @@ codex-switcher restart
 ## Build from source
 
 ```bash
+./scripts/setup-signing.sh   # once: stable code-signing identity so Keychain keys survive rebuilds
 ./build.sh
 ```
 

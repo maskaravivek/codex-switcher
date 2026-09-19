@@ -25,15 +25,17 @@ enum KeychainStore {
         ]
         let update: [String: Any] = [kSecValueData as String: data]
         let status = SecItemUpdate(base as CFDictionary, update as CFDictionary)
-        if status == errSecItemNotFound {
-            var add = base
-            add[kSecValueData as String] = data
-            add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
-            let s = SecItemAdd(add as CFDictionary, nil)
-            guard s == errSecSuccess else { throw KeychainError.status(s) }
-        } else if status != errSecSuccess {
-            throw KeychainError.status(status)
+        if status == errSecSuccess {
+            return
         }
+        // If we can't update (missing, or an orphaned item left behind by a
+        // previous signing identity), replace the item outright.
+        SecItemDelete(base as CFDictionary)
+        var add = base
+        add[kSecValueData as String] = data
+        add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
+        let s = SecItemAdd(add as CFDictionary, nil)
+        guard s == errSecSuccess else { throw KeychainError.status(s) }
     }
 
     static func get(account: String) -> String? {

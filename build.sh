@@ -55,3 +55,15 @@ PLIST
 echo "Built:"
 echo "  $APP"
 echo "  build/codex-switcher"
+
+# Sign with a stable self-signed identity when available so Keychain entries
+# survive rebuilds; otherwise fall back to ad-hoc signing.
+if security find-certificate -c "CodexSwitcher Dev" "$HOME/Library/Keychains/login.keychain-db" >/dev/null 2>&1; then
+  echo "Signing with identity: CodexSwitcher Dev"
+  codesign --force --sign "CodexSwitcher Dev" "$APP"
+  codesign --force --sign "CodexSwitcher Dev" --identifier "com.vivek.codexswitcher" build/codex-switcher
+else
+  echo "Note: 'CodexSwitcher Dev' identity not found — ad-hoc signing (run scripts/setup-signing.sh once)."
+  codesign --force --sign - "$APP"
+  codesign --force --sign - --identifier "com.vivek.codexswitcher" build/codex-switcher
+fi

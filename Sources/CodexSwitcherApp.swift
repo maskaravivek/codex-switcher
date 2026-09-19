@@ -108,9 +108,13 @@ final class AppModel: ObservableObject {
         if alert.runModal() == .alertFirstButtonReturn {
             let key = field.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
             if key.hasPrefix("sk-") {
-                try? KeychainStore.set(key, account: p.keychainAccount)
-                lastMessage = "API key saved for \(p.displayName)"
-                onSave?()
+                do {
+                    try KeychainStore.set(key, account: p.keychainAccount)
+                    lastMessage = "API key saved for \(p.displayName)"
+                    onSave?()
+                } catch {
+                    lastMessage = "Couldn't save key: \(error.localizedDescription)"
+                }
             } else {
                 lastMessage = "Key must start with sk-"
             }
