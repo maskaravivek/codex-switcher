@@ -3,6 +3,10 @@
 A tiny native macOS menu bar app that switches the ChatGPT Codex app between
 your OpenAI account and DeepSeek (Flash / V4 Pro) with one click.
 
+## Demo
+
+https://github.com/user-attachments/assets/6bf1cfd0-ade7-4374-b4fc-43f119a3e75e
+
 ## Features
 
 - Menu bar dropdown: **ChatGPT** / **DeepSeek · Flash** / **DeepSeek · V4 Pro**
